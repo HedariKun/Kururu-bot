@@ -143,5 +143,7 @@ function getCommands(name){
     }
 
 }
-
+while(process.env.STATS !== "READY"){
+    console.log("Loading Process");
+}
 client.login(process.env.APIKEY);

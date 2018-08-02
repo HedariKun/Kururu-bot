@@ -1,0 +1,27 @@
+{
+  "name": "KururuBot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "canvas": "^2.0.0-alpha.12",
+    "discord.js": "^11.3.2",
+    "express": "^4.16.3",
+    "mysql": "^2.16.0",
+    "nekos.life": "^1.0.6",
+    "node-fetch": "^2.2.0",
+    "querystring": "^0.2.0",
+    "request": "^2.87.0",
+    "snekfetch": "^4.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "10.6.0"
+  }
+}

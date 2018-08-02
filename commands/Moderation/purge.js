@@ -2,7 +2,7 @@ module.exports = {
     name : "purge",
     execute : async (msg, args) => {
 
-        if(!msg.member.hasPermission("ADMINISTRATOR")) return msg.reply("You can't call the command");
+        if(!msg.member.hasPermission("ADMINISTRATOR") && msg.author.id != process.env.OWNERID) return msg.reply("You can't call the command");
         const deleteCount = parseInt(args[0], 10);
 
         if(!deleteCount || deleteCount < 2 || deleteCount > 100)

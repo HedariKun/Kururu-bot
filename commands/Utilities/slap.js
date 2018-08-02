@@ -6,25 +6,26 @@ let client = require("nekos.life");
 let neko = new client();
 
 module.exports = {
-    name:"kiss",
-    description: "uses to kiss someone <3",
-    alias: ["kisses"],
-    usage: "(person you want to kiss)",
+    name:"Slap",
+    description: "uses to Slap someone",
+    alias: ["Slaps"],
+    usage: "(person you want to Slap)",
     execute: async(msg, args) => {
         let memb = msg.mentions.members.first();
-        if(!memb) return msg.reply("you will find love one day ;w;");
-        if(memb.user.id == msg.author.id) return msg.reply("so you isolated, how sad ;^;");
+        if(!memb) return msg.reply("choose your victim first");
         let emb = {
             embed: {
-                title: `${msg.author.username} kisses ${memb.user.username}`,
+                title: `${msg.author.username} Slaps ${memb.user.username}`,
                 color:color,
                 image : {
                     url : ""
                 }
             }
         }
-
-        neko.getSFWKiss()
+        if(memb.user.id == msg.author.id){
+            emb.embed.title = `${msg.author.username} Slaps himself how pathetic.`;
+        }
+        neko.getSFWSlap()
         .then(res => {
             emb.embed.image.url = res.url;
             msg.channel.send(emb);

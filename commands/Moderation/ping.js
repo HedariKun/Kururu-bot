@@ -2,6 +2,8 @@ const {color} = require("../config.json");
 
 module.exports = {
     name: "ping",
+    description: "uses to calculate the connection speed",
+
     execute: async (msg) => {
         let emb = {
             embed:{

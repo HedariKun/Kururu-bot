@@ -11,37 +11,63 @@ const snekfetch = require('snekfetch');
 client.commands = new Discord.Collection();
 client.commandTypes = new Discord.Collection();
 
+if(process.env.STATS !== "READY"){
+    require("dotenv").load();
+}   
+
 client.on("ready", () => {
     getCommands("Moderation");
     getCommands("Utilities");
     getCommands("Owner");
     getCommands("Info");
+    getCommands("Nsfw");
     client.user.setPresence({status: 'online', game:{name:'Getting Made <3'}});
     console.log("\nBot is online");
 });
 
 client.on("message", async msg => {
-    if(msg.mentions.users.first() == client.user){
+    if(msg.mentions.users.first() == client.user && msg.content.startsWith("<")){
         msg.reply(`the bot's prefix is ${prefix} \n do ${prefix}help for the commands list.`);
     }
-    
-    if(msg.mentions.users[0] == client.user){
-        msg.reply(`The prefix is ${prefix}`);
-    }
+
     if(msg.author.bot || !msg.content.startsWith(prefix)) return;
     
     let args = msg.content.split(" ");
-    let command = args.shift().slice(1).toLowerCase();
+    let commandName = args.shift().slice(1).toLowerCase();
+    let command;
+    
+    if(client.commands.has(commandName)){
+        command = client.commands.get(commandName).command;
+    } else {
+        client.commands.map(e => {
+            if(!e.command.alias) return;
+            for(let i = 0; i < e.command.alias.length; i++){
+                if(e.command.alias[i].toLowerCase() == commandName){
+                    command = e.command;
+                }
+            }
+        });
+    }
 
-    if(client.commands.has(command)){
+    if(command){
         try {
-        client.commands.get(command).command.execute(msg, args);
-        } catch(err){
+            command.execute(msg, args);
+        } catch (err) {
             console.log(err);
         }
     } else {
-        msg.channel.send("That command doesn't exist");
+        msg.channel.send("that command doesn't exist");
     }
+
+    // if(client.commands.has(command)){
+    //     try {
+    //     client.commands.get(command).command.execute(msg, args);
+    //     } catch(err){
+    //         console.log(err);
+    //     }
+    // } else {
+    //     msg.channel.send("That command doesn't exist");
+    // }
 
 });
 
@@ -118,4 +144,4 @@ function getCommands(name){
 
 }
 
-client.login(token);
+client.login(process.env.APIKEY);

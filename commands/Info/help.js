@@ -7,7 +7,7 @@ module.exports = {
             embed : {
                 title: "Commands List",
                 color: color,
-                description: `The bot prefix is ${prefix}`,
+                description: `The bot prefix is ${prefix} \n you can do ${prefix}help [Command Name] for more information about that command`,
                 fileds: []
             }
         }
@@ -32,8 +32,32 @@ module.exports = {
         });
 
         emb.embed.fields = fields;
-        msg.channel.send(emb);
+        if(!args[0])
+            msg.channel.send(emb);
+        else {
+            let com = msg.client.commands.get(args[0]);
+            if(!com) return msg.reply("that command doesn't exist");
 
+            emb.embed.title = com.command.name;
+            emb.embed.description = com.command.description || "";
+            emb.embed.fields = [];
+            if(com.command.usage){
+                let obj = {
+                    name: "Usage",
+                    value: `${prefix}${com.command.name} ${com.command.usage}`
+                }
+                emb.embed.fields.push(obj);
+            }
+            if(com.command.alias){
+                let obj = {
+                    name: "Alias",
+                    value: com.command.alias.map(e => e).join(", ")
+                }
+                emb.embed.fields.push(obj);
+            }
+
+            msg.channel.send(emb);
+        }
 
     }
 }

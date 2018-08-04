@@ -50,7 +50,7 @@ client.on("message", async msg => {
     let commandName = args.shift().slice(1).toLowerCase();
     let command;
 
-    if(commandName == prefix || commandName == "") return;
+    if(commandName.startsWith(prefix) || commandName == "") return;
     
     if(client.commands.has(commandName)){
         command = client.commands.get(commandName).command;

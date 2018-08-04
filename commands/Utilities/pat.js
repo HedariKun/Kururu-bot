@@ -13,7 +13,7 @@ module.exports = {
     execute: async(msg, args) => {
         let memb = msg.mentions.members.first();
         if(!memb) return msg.reply("you will find love one day ;w;");
-
+        if(memb.user.id == msg.author.id) return msg.reply("so you isolated, how sad ;^;");
         let emb = {
             embed: {
                 title: `${msg.author.username} Pats ${memb.user.username}`,

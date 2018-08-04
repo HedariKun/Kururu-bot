@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-const apiKey = "a1bff1914821fa8bec9fa0b0a436288f";
+const apiKey = process.env.WEATHERAPIKEY;
 const {color} = require("../config.json");
 
 module.exports = {

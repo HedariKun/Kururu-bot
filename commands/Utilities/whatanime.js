@@ -2,7 +2,7 @@ const snekfetch  = require('snekfetch');
 
 const {color} = require("../config.json");
 
-const token = "18287609a92878bbd2db16e2a0b385fdd9d1208f";
+const token = process.env.WHATANIMEAPIKEY;
 
 module.exports = {
     name: "whatanime",
@@ -40,11 +40,35 @@ module.exports = {
                         emb.embed.image.url = `https://whatanime.ga/thumbnail.php?anilist_id=${bestMatch.anilist_id}&file=${encodeURIComponent(bestMatch.filename)}&t=${bestMatch.at}&token=${bestMatch.tokenthumb}`
                         m.delete();
                         msg.channel.send(emb);
+                    } else {
+                        m.delete();
+                        msg.channel.send({
+                            embed: {
+                                color:color,
+                                title: "Couldn't find the anime"
+                            }
+                        });
                     }
+                } else {
+                    m.delete();
+                    msg.channel.send({
+                        embed: {
+                            color: color,
+                            title: "The image is bigger than 1 MB"
+                        }
+                    });
                 }
             }  catch (err) {
                 console.log(err);
             }
+        } else {
+            m.delete();
+            msg.channel.send({
+                embed: {
+                    color:color,
+                    title: "you need to provide image URL"
+                }
+            });
         }        
 
     }

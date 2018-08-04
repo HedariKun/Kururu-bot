@@ -11,6 +11,9 @@ const snekfetch = require('snekfetch');
 client.commands = new Discord.Collection();
 client.commandTypes = new Discord.Collection();
 
+let UsedCommands = [];
+
+
 if(process.env.STATS !== "READY"){
     require("dotenv").load();
 }   
@@ -23,6 +26,17 @@ client.on("ready", () => {
     getCommands("Nsfw");
     client.user.setPresence({status: 'online', game:{name:'Getting Made <3'}});
     console.log("\nBot is online");
+
+    setInterval(() => {
+        for(let u in UsedCommands){
+            if(UsedCommands[u].timer > 0){
+                UsedCommands[u].timer--;
+            } else {
+                UsedCommands.splice(u, 1);
+            }
+        }
+    }, 1000);
+
 });
 
 client.on("message", async msg => {
@@ -35,6 +49,8 @@ client.on("message", async msg => {
     let args = msg.content.split(" ");
     let commandName = args.shift().slice(1).toLowerCase();
     let command;
+
+    if(commandName == prefix || commandName == "") return;
     
     if(client.commands.has(commandName)){
         command = client.commands.get(commandName).command;
@@ -51,23 +67,40 @@ client.on("message", async msg => {
 
     if(command){
         try {
-            command.execute(msg, args);
+            let canUse = true;
+            let found = false;
+            for(let u of UsedCommands){
+                if(u.userID == msg.author.id){
+                    found = true;
+                    if(u.count < 10){
+                        u.count++;
+                        u.timer = 60;
+                    } else {
+                        canUse = false;
+                        msg.reply(`you need to wait ${u.timer} sec before you can use commands again!`);
+                    }
+                } 
+            }
+            if(!found) {
+                let obj = {
+                    userID: msg.author.id,
+                    count: 1,
+                    timer: 60
+                }
+
+                UsedCommands.push(obj);
+
+            }
+            if(canUse)
+                command.execute(msg, args);
+            
         } catch (err) {
             console.log(err);
         }
     } else {
-        msg.channel.send("that command doesn't exist");
+        let m = await msg.channel.send("that command doesn't exist");
+        setTimeout(() => {m.delete()}, 3000);
     }
-
-    // if(client.commands.has(command)){
-    //     try {
-    //     client.commands.get(command).command.execute(msg, args);
-    //     } catch(err){
-    //         console.log(err);
-    //     }
-    // } else {
-    //     msg.channel.send("That command doesn't exist");
-    // }
 
 });
 
@@ -143,7 +176,6 @@ function getCommands(name){
     }
 
 }
-while(process.env.STATS !== "READY"){
-    console.log("Loading Process");
-}
+
+
 client.login(process.env.APIKEY);

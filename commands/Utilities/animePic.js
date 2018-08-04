@@ -1,10 +1,13 @@
 const fetch = require("node-fetch");
 const {color} = require("../config.json");
 
+let images = [];
+
 module.exports = {
     name: "animePic",
     execute(msg, args){
-        fetch(`https://yande.re/post.json?limit=100&&tags=${args.map(e => e).join('_')}`)
+        
+        fetch(`https://yande.re/post.json?limit=100&&tags=rating:safe+${args.map(e => e).join('_')}`)
         .then(t => t.json())
         .then(j => {
             let pics = [];
@@ -43,4 +46,11 @@ module.exports = {
 
         //msg.reply(j[Math.floor(Math.random() * 100)].jpeg_url)
     }
+}
+
+function getData(url){
+    fetch(url)
+    .then(e => e.json())
+    .then(j => j.map(e => images.push(e)));
+    console.log(images);
 }

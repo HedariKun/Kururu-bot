@@ -1,8 +1,10 @@
-const {color, prefix} = require("../config.json");
+const {color} = require("../config.json");
+const serversManger = require("../../mysql/serversManger");
 
 module.exports = {
     name : "help",
     execute(msg, args){
+        const prefix = serversManger.getPrefix(msg.guild.id);
         let emb = {
             embed : {
                 title: "Commands List",
@@ -22,7 +24,7 @@ module.exports = {
 
             msg.client.commands.map(c => {
                 if(c.type == e){
-                    obj.value += `${c.command.name} \n`
+                    obj.value += `\`${c.command.name}\`, `
                 }
             });
 

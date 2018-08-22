@@ -1,12 +1,13 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const client = new Discord.Client();
-const {token, color, prefix} = require("./commands/config.json");
+const {actions, loadActions} = require("./commands/Action/actionManger");
 const dbConnection = require("./mysql/mysql_controller");
 const serversManger = require("./mysql/serversManger");
 
 const {onMessage, UsedCommands} = require("./events/onMessage");
 const {onUserAdd} = require("./events/onUserAdded");
+const {onJoinGuild} = require("./events/onJoinGuild");
 
 client.commands = new Discord.Collection();
 client.commandTypes = new Discord.Collection();
@@ -21,6 +22,8 @@ client.on("ready", () => {
     getCommands("Owner");
     getCommands("Info");
     getCommands("Nsfw");
+    // getCommands("Action");
+    loadingActions();
 
     dbConnection.startDatabasePoke();
     serversManger.loadServers();
@@ -48,6 +51,9 @@ client.on("guildMemberAdd", async member => {
     onUserAdd(member);
 });
 
+client.on("guildCreate", async guild => {
+    onJoinGuild(guild);
+});
 
 function getCommands(name){
     let commandsFile = fs.readdirSync(`./commands/${name}`).filter(file => file.endsWith('.js'));
@@ -70,5 +76,14 @@ function getCommands(name){
 
 }
 
+function loadingActions(){
+    console.log(" ");
+    loadActions();
+    client.commandTypes.set("Actions", "Actions");
+    for(let action of actions){
+        console.log(`${action.command.name} is loaded successfully`)
+        client.commands.set(action.command.name.toLowerCase(), action);
+    }
+}
 
 client.login(process.env.APIKEY);

@@ -1,5 +1,5 @@
-let gifAPI = require("../API/getGif.js");
-const {color} = require("../config.json");
+const gifAPI = require("../../handlers/getGif");
+const {imageEmbed} = require("../../handlers/imageEmbed");
 
 module.exports = {
     name:"gif",
@@ -7,19 +7,9 @@ module.exports = {
         let tag = args.map(e => e).join(" ") || "anime";
         tag == " " ? "anime" : tag;
         
-        let emb = {
-            embed : {
-                color:color,
-                title: `Gif - ${tag}`,
-                image: {
-                    url : ""
-                }
-            }
-        }
-
         let g = await gifAPI.get(tag);
         if(!g) return msg.reply("couldn't find the gif");
-        emb.embed.image.url = g;
-        msg.channel.send(emb);
+
+        msg.channel.send(imageEmbed(`Gif - ${tag}`, g));
     }
 }

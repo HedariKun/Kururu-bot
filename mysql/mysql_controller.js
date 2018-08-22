@@ -52,7 +52,7 @@ function PokeServer(){
         var date = new Date();
         var printMessage =  "[" + date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() +
                             " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + "] " + 
-                            "Ping... Selected name: " + result[0].name;
+                            "Ping... Selected name: " + result[0].serverName;
         console.log(printMessage);
       });
     }, 14400000);// Pinging each 4 hours

@@ -1,6 +1,7 @@
 # Kururu Bot
 kururu is general purpose bot, the do a lot of things
-*prefix:* ~ | *programmed in:* [discord.js](https://discord.js.org/) | *language:* javascript
+*prefix:* ~ | *programmed in:* [discord.js](https://discord.js.org/) | *language:* javascript | [invite me]( https://discordapp.com/api/oauth2/authorize?client_id=469288778674995213&permissions=8&scope=bot)
+----------- | ------------------------------------------------------ | ---------------------- | --------------------------------------------------------------------------------------------------------------
 # Features
 - [x] Moderation
 - [x] Utilities
